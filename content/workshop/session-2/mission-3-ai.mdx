@@ -1,0 +1,93 @@
+---
+title: 미션 3 — AI API 연동
+description: Gemini API를 연결해 실제로 작동하는 프롬프트 증강기를 완성한다
+---
+
+import { Steps, Callout, Tabs } from 'nextra/components'
+
+# 미션 3: AI API 연동
+
+**시간**: 25분
+
+## 목표
+
+Google AI Studio에서 발급한 Gemini API 키를 연결해, 버튼을 누르면 실제 AI가 프롬프트를 개선해주도록 만든다.
+
+## 실습
+
+<Steps>
+### API 키 환경변수 설정
+
+Lovable 프로젝트 → `Settings` → `Environment Variables` → 추가:
+
+```
+VITE_GEMINI_API_KEY=여기에_API_키_붙여넣기
+```
+
+<Callout type="warning">
+API 키는 절대 코드에 직접 넣지 마세요. 환경변수로 관리해야 GitHub에 노출되지 않습니다.
+</Callout>
+
+### AI 연동 프롬프트 작성
+
+<Tabs items={['도전해보기', '힌트 프롬프트']}>
+  <Tabs.Tab>
+    Gemini API를 연결해서 실제로 프롬프트를 개선하는 기능을 추가하는 프롬프트를 써보세요.
+    어떤 System Prompt를 쓰면 좋을까요? (AI Studio에서 실험한 내용을 활용하세요!)
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    Gemini API를 연결해서 실제로 프롬프트를 개선하는 기능을 구현해줘.
+
+    ## API 설정
+    - 환경변수 VITE_GEMINI_API_KEY 사용
+    - 모델: gemini-2.0-flash
+
+    ## System Prompt
+    당신은 프롬프트 엔지니어링 전문가입니다.
+    사용자가 프롬프트를 입력하면:
+    1. 프롬프트의 목적을 파악하고
+    2. 불명확한 부분을 구체화하고
+    3. 더 좋은 결과를 얻을 수 있도록 개선된 프롬프트를 제안합니다.
+
+    출력 형식:
+    - 개선된 프롬프트
+    - 주요 개선 사항 (불릿 2~3개)
+
+    ## UX
+    - '개선하기' 버튼 클릭 시 로딩 상태 표시
+    - 에러 발생 시 사용자 친화적인 메시지 표시
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### System Prompt 커스터마이징 (선택)
+
+AI Studio에서 실험했던 System Prompt 중 마음에 드는 것을 넣어보세요.
+
+더 좋은 결과를 내는 System Prompt를 찾아보는 것도 좋습니다.
+
+### 최종 테스트
+
+1. 프롬프트 입력 (예: "ChatGPT에게 여행 계획 짜달라고 하기")
+2. '개선하기' 클릭
+3. AI가 개선한 프롬프트 확인
+4. 저장하기 → 목록에서 확인
+</Steps>
+
+## 완성된 앱 체크리스트
+
+- [ ] Google 로그인/로그아웃
+- [ ] 프롬프트 입력 → AI 개선 → 결과 표시
+- [ ] 저장하기 → 내 프롬프트 목록
+- [ ] Publish URL로 팀에 공유 가능
+
+## 완성 후 할 것
+
+URL을 채팅에 공유해주세요. 서로 써보고 피드백을 주고받습니다.
+
+그리고 생각해보세요:
+- 이 앱을 실제 업무에서 쓴다면 어떤 System Prompt를 쓸 건가요?
+- 동료들에게 어떤 프롬프트 팁을 공유하고 싶나요?
+
+→ [세션 3: 프롬프트 자산화](/workshop/session-3) — 이 앱에 팀 공유 기능 추가

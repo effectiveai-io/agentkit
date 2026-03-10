@@ -1,0 +1,92 @@
+---
+title: Step 3 — Lovable로 프롬프트 증강기 만들기
+description: URL로 공유 가능한, 배포된 앱을 만든다
+---
+
+import { Steps, Callout, Tabs, FileTree } from 'nextra/components'
+
+# Step 3: Lovable
+
+**시간**: 20분 | **도구**: [Lovable](https://lovable.dev)
+
+## 목표
+
+Step 1~2에서 만든 것을 실제로 **배포 가능한 앱**으로 만든다. URL로 공유하고, GitHub에 코드가 올라간다.
+
+## 실습
+
+<Steps>
+### Lovable 워크스페이스 접속
+
+강사가 초대한 **빗썸 실습용 워크스페이스**에서 작업하세요. (크레딧 소모 없음)
+
+`New project` → 프로젝트 이름: `prompt-enhancer-[내이름]`
+
+### 첫 번째 프롬프트 작성 (10분)
+
+Step 1~2 경험을 바탕으로, 이번엔 처음부터 더 구체적인 프롬프트를 써보세요.
+
+<Tabs items={['도전해보기', '힌트', '강사 프롬프트 (공개 후)']}>
+  <Tabs.Tab>
+    직접 써보세요. Step 1에서 첫 시도할 때보다 더 잘 쓸 수 있을 거예요.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    프롬프트 증강기 웹앱을 만들어줘.
+
+    ## 기능
+    - 텍스트 입력창에 원본 프롬프트 입력
+    - '개선하기' 버튼 클릭
+    - [어떻게 개선할지 설명]
+
+    ## UI
+    - [원하는 레이아웃 설명]
+
+    ## 기술
+    - React + TypeScript
+    - Gemini API (나중에 연결 예정, 지금은 mock으로)
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    실습 후 공개 예정
+  </Tabs.Tab>
+</Tabs>
+
+### 배포하기 (5분)
+
+우상단 `Publish` → URL 복사 → 채팅에 공유해주세요.
+
+### GitHub 연동 (선택, 5분)
+
+우상단 `...` → `Connect to GitHub` → 레포지토리 생성
+
+<FileTree>
+  <FileTree.Folder name="내 GitHub 레포" defaultOpen>
+    <FileTree.Folder name="src">
+      <FileTree.File name="App.tsx" />
+      <FileTree.File name="components/" />
+    </FileTree.Folder>
+    <FileTree.File name="package.json" />
+  </FileTree.Folder>
+</FileTree>
+</Steps>
+
+## Step 1~3 비교
+
+| | Gemini Canvas | Google AI Studio | Lovable |
+|---|---|---|---|
+| **시작 속도** | 즉시 | 즉시 | 1분 |
+| **UI 품질** | 기본 | 없음(API만) | ⭐⭐⭐ |
+| **배포** | ❌ | ❌ | ✅ URL 생성 |
+| **코드 소유** | ❌ | ❌ | ✅ GitHub |
+| **확장성** | 낮음 | 중간(API) | 높음 |
+| **이후 수정** | 대화로만 | 프롬프트로만 | 코드 직접 편집 가능 |
+
+<Callout type="info">
+**Lovable의 진짜 강점**은 "첫 버전 이후"입니다.
+만들어진 코드를 로컬에서 수정하거나, GitHub으로 팀과 협업하거나, 세션 2에서처럼 고도화할 수 있습니다.
+</Callout>
+
+## 다음 단계
+
+→ [세 도구 비교](/workshop/session-1/compare) — 오늘 경험을 정리하고 공유

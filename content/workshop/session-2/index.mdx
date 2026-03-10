@@ -1,0 +1,55 @@
+---
+title: 세션 2 — Lovable 고도화
+description: Google 인증 · 데이터베이스 · AI API 연동을 단계별 미션으로
+---
+
+import { Steps, Callout, Cards, Card } from 'nextra/components'
+
+# 세션 2: Lovable 고도화
+
+**시간**: 60분 | **목표**: 세션 1에서 만든 앱을 실제로 배포 가능한 수준으로 고도화한다
+
+## 오늘 추가하는 것
+
+세션 1에서 만든 프롬프트 증강기에 세 가지를 추가합니다.
+
+```
+세션 1 결과물 (UI만 있는 앱)
+    ↓
+미션 1: Google 로그인 추가
+    ↓
+미션 2: 프롬프트 저장/불러오기 (Supabase DB)
+    ↓
+미션 3: Gemini API 연결 (실제로 동작하는 AI)
+```
+
+<Callout type="warning">
+**미션은 순서대로** 진행하세요. 각 미션은 이전 미션의 결과물 위에 쌓입니다.
+막히면 강사에게 질문하거나 힌트를 확인하세요. 완성이 목적이 아니라 **경험이 목적**입니다.
+</Callout>
+
+## 미션 구성
+
+<Cards>
+  <Card
+    title="미션 1 — Google 인증 (15분)"
+    description="Lovable의 Supabase 연동으로 Google 로그인 추가"
+    href="/workshop/session-2/mission-1-auth"
+  />
+  <Card
+    title="미션 2 — 데이터베이스 연동 (20분)"
+    description="프롬프트를 저장하고 불러오는 기능 추가"
+    href="/workshop/session-2/mission-2-database"
+  />
+  <Card
+    title="미션 3 — AI API 연동 (25분)"
+    description="Gemini API를 연결해 실제로 작동하는 증강기 완성"
+    href="/workshop/session-2/mission-3-ai"
+  />
+</Cards>
+
+## 세션 전에 준비할 것
+
+- 세션 1에서 만든 Lovable 프로젝트 열기
+- Google AI Studio API 키 준비 (Step 2에서 발급한 것)
+- Supabase 계정 (없으면 [supabase.com](https://supabase.com)에서 Google 로그인으로 가입)

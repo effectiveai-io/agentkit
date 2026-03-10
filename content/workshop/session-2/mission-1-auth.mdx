@@ -1,0 +1,69 @@
+---
+title: 미션 1 — Google 인증 추가
+description: Lovable의 Supabase 연동으로 Google 로그인을 추가한다
+---
+
+import { Steps, Callout, Tabs } from 'nextra/components'
+
+# 미션 1: Google 인증
+
+**시간**: 15분
+
+## 목표
+
+Google 계정으로 로그인하면 "내 프롬프트"를 저장할 수 있도록 인증을 추가한다.
+
+## 실습
+
+<Steps>
+### Lovable에서 Supabase 연결
+
+프로젝트 우상단 `Supabase` 버튼 → `Connect to Supabase`
+
+새 Supabase 프로젝트가 자동으로 생성됩니다.
+
+### Google 인증 추가 프롬프트 작성
+
+Lovable 채팅창에 입력:
+
+<Tabs items={['도전해보기', '힌트 프롬프트']}>
+  <Tabs.Tab>
+    Supabase를 이용해 Google 소셜 로그인을 추가하는 프롬프트를 직접 써보세요.
+    어떤 정보가 필요할까요?
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    Supabase Auth를 이용해 Google 소셜 로그인을 추가해줘.
+
+    - 로그인/로그아웃 버튼을 헤더에 추가
+    - 로그인하면 사용자 이메일과 프로필 사진 표시
+    - 로그인하지 않은 상태에서도 앱은 사용 가능하지만,
+      저장 기능은 로그인 후에만 활성화
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### Supabase에서 Google OAuth 활성화
+
+Supabase 대시보드 → `Authentication` → `Providers` → `Google` 활성화
+
+<Callout type="info">
+Google Cloud Console에서 OAuth 앱을 만들어야 할 수 있습니다.
+강사가 미리 준비한 Client ID/Secret을 사용해도 됩니다.
+</Callout>
+
+### 테스트
+
+- 실제로 Google 로그인이 되는지 확인
+- 로그인 후 사용자 정보가 표시되는지 확인
+</Steps>
+
+## 확인 포인트
+
+- [ ] Google 로그인 버튼이 보인다
+- [ ] 로그인하면 내 구글 계정 이름/사진이 표시된다
+- [ ] 로그아웃이 된다
+
+## 다음 단계
+
+→ [미션 2: 데이터베이스 연동](/workshop/session-2/mission-2-database)
