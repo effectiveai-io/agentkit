@@ -5,18 +5,18 @@ import 'nextra-theme-docs/style.css'
 import type { ReactNode } from 'react'
 
 export const metadata = {
-  title: 'vibekit',
-  description: 'AI 도구를 제대로 쓰는 법: 프롬프트부터 앱 배포까지'
+  title: 'agentkit',
+  description: 'AI를 제대로 일하게 만드는 법: 바이브 코딩을 넘어 에이전틱 코딩으로'
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const navbar = (
     <Navbar
-      logo={<span style={{ fontWeight: 700, fontSize: '1.1rem' }}>⚡ vibekit</span>}
-      projectLink="https://github.com/effective-ai-lab/vibekit"
+      logo={<span style={{ fontWeight: 700, fontSize: '1.1rem' }}>⚙️ agentkit</span>}
+      projectLink="https://github.com/effective-ai-lab/agentkit"
     />
   )
-  const footer = <Footer>vibekit — effective-ai-lab</Footer>
+  const footer = <Footer>agentkit — effective-ai-lab</Footer>
   const pageMap = await getPageMap()
 
   return (
@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           navbar={navbar}
           footer={footer}
           pageMap={pageMap}
-          docsRepositoryBase="https://github.com/effective-ai-lab/vibekit/tree/main"
+          docsRepositoryBase="https://github.com/effective-ai-lab/agentkit/tree/main"
         >
           {children}
         </Layout>
