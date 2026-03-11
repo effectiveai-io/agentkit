@@ -439,12 +439,16 @@ article > div:has(> time) {
 
 article {
   max-width: 52rem;
+  margin-inline: auto;
+}
+
+/* 사이드바가 보이는 페이지: article+TOC를 가운데 정렬 */
+body:not(:has(.home-page)) .nextra-sidebar ~ article {
   margin-left: auto;
   margin-right: 0;
 }
 
-/* TOC와 article을 함께 가운데 정렬 */
-nav[aria-label="table of contents"] {
+body:not(:has(.home-page)) .nextra-sidebar ~ nav[aria-label="table of contents"] {
   margin-right: auto;
 }
 
