@@ -867,6 +867,7 @@ article:has(.home-page) {
 
 .home-kicker,
 .section-kicker {
+  display: block;
   margin: 0 0 0.5rem;
   color: var(--agentkit-text-subtle);
   font-size: 0.78rem;
@@ -884,6 +885,7 @@ article:has(.home-page) {
 }
 
 .home-subtitle {
+  display: block;
   max-width: 44rem;
   margin: 1rem 0 0;
   color: var(--agentkit-text-muted);
