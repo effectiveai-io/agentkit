@@ -1269,6 +1269,7 @@ article a.home-button.primary {
 
 .home-beyond .home-steps {
   grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .home-beyond .home-step-number {
