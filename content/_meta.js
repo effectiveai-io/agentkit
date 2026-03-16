@@ -4,5 +4,6 @@ export default {
     display: 'hidden'
   },
   workshop: '워크숍',
-  cases: '실무 사례'
+  cases: '실무 사례',
+  resources: '학습 자료'
 }
