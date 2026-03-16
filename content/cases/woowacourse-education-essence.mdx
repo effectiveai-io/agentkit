@@ -5,6 +5,7 @@ description: 교육자별 실험 기록을 쌓아 도구화하고, 에센스를 
 
 import { Callout } from 'nextra/components'
 import dynamic from 'next/dynamic'
+import { layerChart, cycleChart } from './woowacourse-charts'
 
 const Mermaid = dynamic(() => import('../../app/components/Mermaid').then(m => m.Mermaid), { ssr: false })
 
