@@ -55,10 +55,27 @@ import { Steps, Callout, Cards } from 'nextra/components'
 세 도구로 같은 앱을 반복해서 만들며 "AI에게 매번 하는 말"을 발견하고,
 그 반복을 <strong>AGENTS.md</strong>라는 재사용 가능한 지시 파일로 정리합니다.
 
-<Callout type="warning" emoji="📌">
-**AGENTS.md는 이 워크숍의 실습 산출물입니다.**
-카파시의 `program.md`, Anthropic의 `CLAUDE.md`, Cursor의 `.cursorrules` 등
-도구마다 이름은 다르지만, <strong>"AI에게 나의 작업 방식을 알려주는 재사용 가능한 지시서"</strong>라는 핵심은 같습니다.
+### 이미 업계 표준이 되고 있습니다
+
+이 워크숍에서는 대표적인 이름으로 **AGENTS.md**를 사용하지만,
+"AI에게 나의 작업 방식을 알려주는 재사용 가능한 지시서"라는 개념은 이미 업계 표준으로 자리잡고 있습니다.
+
+[AGENTS.md](https://agents.md/)는 Google, OpenAI, GitHub Copilot, Cursor 등이 공동으로 만든 오픈 포맷으로,
+현재 [Linux Foundation 산하 Agentic AI Foundation](https://github.com/agentsmd/agents.md)이 관리하며 60,000개 이상의 프로젝트에서 사용 중입니다.
+
+<Callout type="default" emoji="🗂️">
+**도구마다 이름은 다르지만, 핵심은 같습니다**
+
+| 도구 | 지시 파일 | 공식 문서 |
+|------|-----------|-----------|
+| Claude Code | `CLAUDE.md` | [code.claude.com/docs/en/memory](https://code.claude.com/docs/en/memory) |
+| OpenAI Codex | `AGENTS.md` | [developers.openai.com/codex/guides/agents-md](https://developers.openai.com/codex/guides/agents-md/) |
+| GitHub Copilot | `AGENTS.md` | [GitHub 블로그 — 2,500개 분석](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/) |
+| Cursor | `.cursorrules` | Cursor 설정 |
+| Lovable | Knowledge | Lovable 프로젝트 설정 |
+| Karpathy autoresearch | `program.md` | [github.com/karpathy/autoresearch](https://github.com/karpathy/autoresearch) |
+
+→ 오늘 워크숍에서 만드는 내용은 **어떤 도구를 쓰든 바로 적용할 수 있는 자산**이 됩니다.
 </Callout>
 
 ## 3세션 흐름
