@@ -1,5 +1,10 @@
 import { useMDXComponents as getDocsMDXComponents } from 'nextra-theme-docs'
-import { Mermaid } from './app/components/Mermaid'
+import dynamic from 'next/dynamic'
+
+const Mermaid = dynamic(
+  () => import('./app/components/Mermaid').then((mod) => mod.Mermaid),
+  { ssr: false }
+)
 
 const docsComponents = getDocsMDXComponents()
 
