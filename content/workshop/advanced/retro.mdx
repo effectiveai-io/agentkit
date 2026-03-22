@@ -1,0 +1,104 @@
+---
+title: 회고 + 액션플랜
+description: 오늘 경험을 정리하고, 실무에서 이어갈 액션플랜을 작성합니다
+---
+
+import { Callout } from 'nextra/components'
+import { Timer } from '../../../app/components/Timer'
+
+# 회고 + 액션플랜
+
+<Timer minutes={25} />
+
+## 개인 회고
+
+아래 질문에 각각 한두 문장으로 적어보세요.
+
+### 1. 오늘 가장 인상적이었던 순간은?
+
+autoresearch 개념, 인포그래픽 만들기, 자동 개선 사이클, 검증 앱 — 어느 순간이 가장 기억에 남나요?
+
+### 2. AI가 자동으로 개선한 프롬프트에서 "이건 내가 생각 못 했다"는 부분이 있었나요?
+
+AI가 프롬프트를 개선하면서 추가한 것 중, 본인이 직접 했으면 넣지 않았을 것은?
+
+### 3. 당장 내일부터 바로 할 수 있는 것 하나는?
+
+---
+
+## 오늘 만든 것 정리
+
+| 결과물 | 어디에 있나 | 다음에 할 것 |
+|--------|-----------|------------|
+| autoresearch 인포그래픽 | Gemini Canvas 링크 | 팀원에게 공유해보기 |
+| 자동 개선된 코드 리뷰 프롬프트 | Canvas 앱 / 메모장 | 실제 팀 코드로 다시 돌리기 |
+| 5개 코드 검증 결과 | Canvas 검증 앱 | 샘플을 실제 코드로 교체 |
+| 내 업무 프롬프트 (3단계) | 메모장 / GitHub fork | 실제 자료 5개로 검증 |
+
+---
+
+## 실무 적용 경로
+
+### 이번 주
+
+- fork한 저장소의 `samples/`에 **실제 팀 코드/기획서** 1~2개 추가
+- 오늘 만든 프롬프트로 실제 업무에서 1번 써보기
+- 결과가 기대와 다르면 프롬프트 한 줄 수정 → 다시 시도
+
+### 다음 주
+
+- 개선된 프롬프트를 동료 한 명에게 공유
+- "이 프롬프트 써봐" → 피드백 받기 → 반영
+
+### 한 달 후
+
+- 팀 저장소로 만들어서 팀 전원이 fork하고 각자 맥락에 맞게 사용
+- 주 1회 자동 개선 사이클을 돌려서 프롬프트 계속 개선
+
+---
+
+## 반복에서 축적으로
+
+오늘 경험한 것이 우아한형제들에서는 이미 일어나고 있습니다.
+
+**개인 → 도구**: [테스트 자동화 플러그인](https://techblog.woowahan.com/24568/)
+— 매번 같은 컨벤션 설명 반복 → 플러그인으로 구조화 → 70% 시간 단축
+
+**팀 → 자산**: [MCP stdio로 헤쳐모여](https://techblog.woowahan.com/25986/)
+— 흩어진 프롬프트·규칙 → npm 패키지로 중앙화 → 설치로 전파
+
+**조직 → 문화**: [AI Dive Deep](https://techblog.woowahan.com/26034/)
+— 마케터 150분→25분, PM이 MCP로 코드 확인, 디자이너가 플러그인 직접 제작
+
+<Callout type="info">
+오늘 만든 프롬프트는 시작일 뿐입니다.
+실제 자료로 바꿔 넣고, 사이클을 더 돌리고, 동료에게 공유하면
+<strong>개인의 도구 → 팀의 자산</strong>으로 발전합니다.
+</Callout>
+
+---
+
+## 도구 이름은 달라도 구조는 같다
+
+오늘 만든 프롬프트는 어떤 도구에서든 쓸 수 있습니다.
+
+| 도구 | 지침서가 들어가는 곳 |
+|------|---------------------|
+| ChatGPT | 커스텀 지침 (Settings > Customize) |
+| Claude | 프로젝트 지침 (Project Instructions) |
+| Claude Code / Antigravity | `CLAUDE.md` / `AGENTS.md` |
+| Cursor | `.cursorrules` |
+| GitHub Copilot | `copilot-instructions.md` |
+| Gemini | Gems + GitHub 연결 |
+
+---
+
+## 참고 자료
+
+- [autoresearch](https://github.com/karpathy/autoresearch) — Andrej Karpathy
+- [prompt-workshop](https://github.com/effectiveai-io/prompt-workshop) — 워크숍 실습 저장소
+- [AI와 함께하는 테스트 자동화](https://techblog.woowahan.com/24568/) — 우아한형제들
+- [코파일럿 열일하게 만드는 방법](https://techblog.woowahan.com/21240/) — 우아한형제들
+- [MCP stdio로 헤쳐모여](https://techblog.woowahan.com/25986/) — 우아한형제들
+- [AI Dive Deep](https://techblog.woowahan.com/26034/) — 우아한형제들
+- [AGENTS.md 오픈 포맷](https://agents.md/)
