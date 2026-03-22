@@ -3,7 +3,7 @@ title: autoresearch 루프
 description: Karpathy의 autoresearch에서 영감을 받아 업무 지침서 개선 루프를 설계합니다
 ---
 
-import { Callout } from 'nextra/components'
+import { Callout, Tabs } from 'nextra/components'
 
 # autoresearch 루프
 
@@ -33,6 +33,233 @@ AI 에이전트에게 작은 LLM 학습 환경을 주고, 밤새 자율적으로
 Karpathy는 이 `.md` 파일을 이렇게 표현합니다:
 
 > *"The `program.md` file is essentially a super lightweight skill."*
+
+### program.md 전문
+
+autoresearch의 핵심인 `program.md` 전문입니다.
+사람이 AI에게 주는 유일한 지시서 — 이것이 autoresearch의 전부입니다.
+
+<Tabs items={['한국어 번역', '영어 원문']}>
+<Tabs.Tab>
+
+```markdown
+# autoresearch
+
+LLM이 스스로 연구를 수행하는 실험입니다.
+
+## 셋업
+
+새 실험을 시작할 때, 사용자와 함께 다음을 진행합니다:
+
+1. **실행 태그 합의**: 오늘 날짜 기반 태그를 제안합니다 (예: `mar5`).
+   `autoresearch/<태그>` 브랜치가 이미 존재하면 안 됩니다 — 새로운 실행입니다.
+2. **브랜치 생성**: 현재 master에서 `git checkout -b autoresearch/<태그>`.
+3. **범위 내 파일 읽기**: 레포가 작습니다. 전체 맥락을 위해 다음 파일을 읽으세요:
+   - `README.md` — 저장소 맥락.
+   - `prepare.py` — 고정 상수, 데이터 준비, 토크나이저, 데이터로더, 평가. 수정 금지.
+   - `train.py` — 당신이 수정하는 파일. 모델 아키텍처, 옵티마이저, 학습 루프.
+4. **데이터 존재 확인**: `~/.cache/autoresearch/`에 데이터 샤드와 토크나이저가 있는지 확인.
+   없으면 사람에게 `uv run prepare.py` 실행을 요청합니다.
+5. **results.tsv 초기화**: 헤더 행만 있는 `results.tsv`를 생성합니다.
+   베이스라인은 첫 번째 실행 후 기록됩니다.
+6. **확인 후 시작**: 셋업이 정상인지 확인합니다.
+
+확인을 받으면 실험을 시작합니다.
+
+## 실험
+
+각 실험은 단일 GPU에서 실행됩니다. 학습 스크립트는 **고정 시간 예산 5분**(벽시계 학습
+시간, 시작/컴파일 제외)으로 실행됩니다. 실행 방법: `uv run train.py`.
+
+**할 수 있는 것:**
+- `train.py` 수정 — 이것만 편집합니다. 모든 것이 대상입니다: 모델 아키텍처, 옵티마이저,
+  하이퍼파라미터, 학습 루프, 배치 크기, 모델 크기 등.
+
+**할 수 없는 것:**
+- `prepare.py` 수정. 읽기 전용입니다.
+- 새 패키지 설치나 의존성 추가. `pyproject.toml`에 있는 것만 사용 가능합니다.
+- 평가 코드 수정. `prepare.py`의 `evaluate_bpb` 함수가 ground truth 지표입니다.
+
+**목표는 단순합니다: 가장 낮은 val_bpb를 달성하는 것.** 시간 예산이 고정이므로 학습 시간을
+걱정할 필요 없습니다 — 항상 5분입니다. 모든 것이 허용됩니다: 아키텍처, 옵티마이저,
+하이퍼파라미터, 배치 크기, 모델 크기를 바꾸세요. 유일한 제약은 코드가 크래시 없이 실행되고
+시간 예산 내에 완료되는 것입니다.
+
+**단순성 기준**: 다른 조건이 같다면 단순한 것이 낫습니다. 복잡성을 추가하는 작은 개선은
+가치가 없습니다. 반대로, 무언가를 제거하고 같거나 더 나은 결과를 얻으면 좋은 결과입니다
+— 단순화 승리. val_bpb 0.001 개선이 20줄의 지저분한 코드를 추가한다면? 아마 가치 없습니다.
+코드를 삭제해서 0.001 개선? 반드시 유지. ~0 개선이지만 훨씬 단순한 코드? 유지.
+
+**첫 번째 실행**: 첫 실행은 항상 베이스라인 확립을 위해 학습 스크립트를 있는 그대로 실행합니다.
+
+## 결과 로깅
+
+실험이 끝나면 `results.tsv`에 기록합니다 (탭으로 구분, 쉼표 아님).
+
+TSV는 헤더 행과 5개 컬럼을 가집니다:
+commit, val_bpb, memory_gb, status, description
+
+## 실험 루프
+
+실험은 전용 브랜치에서 실행됩니다 (예: `autoresearch/mar5`).
+
+영원히 반복:
+
+1. git 상태 확인: 현재 브랜치/커밋
+2. 실험 아이디어로 `train.py`를 직접 수정
+3. git 커밋
+4. 실험 실행: `uv run train.py > run.log 2>&1`
+5. 결과 읽기: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
+6. grep 출력이 비었으면 크래시. `tail -n 50 run.log`로 스택 트레이스를 읽고 수정 시도.
+   몇 번 시도해도 안 되면 포기.
+7. TSV에 결과 기록
+8. val_bpb가 개선되면(낮아지면) 브랜치를 "전진"시키고 커밋 유지
+9. val_bpb가 같거나 나쁘면 시작 지점으로 git reset
+
+아이디어는 당신이 완전히 자율적인 연구자라는 것입니다. 작동하면 유지, 안 되면 폐기.
+브랜치를 전진시키며 반복합니다.
+
+**타임아웃**: 각 실험은 총 ~5분 소요. 10분 초과 시 kill하고 실패 처리.
+
+**크래시**: 크래시 발생 시 판단에 따라: 타이포 같은 단순 실수면 수정 후 재실행.
+아이디어 자체가 근본적으로 문제면 건너뛰고 TSV에 "crash" 기록.
+
+**절대 멈추지 마세요**: 실험 루프가 시작되면 사람에게 계속할지 묻지 마세요.
+"계속할까요?" "여기서 멈출까요?" 묻지 마세요.
+사람은 자고 있거나 컴퓨터 앞에 없을 수 있으며, 당신이 수동으로 멈출 때까지
+**무한히** 계속 작업하기를 기대합니다.
+당신은 자율적입니다. 아이디어가 떨어지면 더 열심히 생각하세요
+— 코드에 참조된 논문을 읽고, 범위 내 파일을 다시 읽어 새로운 각도를 찾고,
+이전의 아깝게 실패한 것들을 조합하고, 더 급진적인 아키텍처 변경을 시도하세요.
+루프는 사람이 중단할 때까지 실행됩니다, 마침표.
+
+사용 예시: 사용자가 잠자는 동안 실행할 수 있습니다.
+각 실험이 ~5분이면 시간당 약 12회, 평균 수면 시간 동안 약 100회 실행 가능합니다.
+사용자가 아침에 일어나면 실험 결과가 모두 완료되어 있습니다!
+```
+
+</Tabs.Tab>
+<Tabs.Tab>
+
+```markdown
+# autoresearch
+
+This is an experiment to have the LLM do its own research.
+
+## Setup
+
+To set up a new experiment, work with the user to:
+
+1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar5`).
+   The branch `autoresearch/<tag>` must not already exist — this is a fresh run.
+2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current master.
+3. **Read the in-scope files**: The repo is small. Read these files for full context:
+   - `README.md` — repository context.
+   - `prepare.py` — fixed constants, data prep, tokenizer, dataloader, evaluation.
+     Do not modify.
+   - `train.py` — the file you modify. Model architecture, optimizer, training loop.
+4. **Verify data exists**: Check that `~/.cache/autoresearch/` contains data shards
+   and a tokenizer. If not, tell the human to run `uv run prepare.py`.
+5. **Initialize results.tsv**: Create `results.tsv` with just the header row.
+   The baseline will be recorded after the first run.
+6. **Confirm and go**: Confirm setup looks good.
+
+Once you get confirmation, kick off the experimentation.
+
+## Experimentation
+
+Each experiment runs on a single GPU. The training script runs for a **fixed time
+budget of 5 minutes** (wall clock training time, excluding startup/compilation).
+You launch it simply as: `uv run train.py`.
+
+**What you CAN do:**
+- Modify `train.py` — this is the only file you edit. Everything is fair game:
+  model architecture, optimizer, hyperparameters, training loop, batch size,
+  model size, etc.
+
+**What you CANNOT do:**
+- Modify `prepare.py`. It is read-only.
+- Install new packages or add dependencies.
+  You can only use what's already in `pyproject.toml`.
+- Modify the evaluation harness.
+  The `evaluate_bpb` function in `prepare.py` is the ground truth metric.
+
+**The goal is simple: get the lowest val_bpb.** Since the time budget is fixed,
+you don't need to worry about training time — it's always 5 minutes. Everything
+is fair game: change the architecture, the optimizer, the hyperparameters, the
+batch size, the model size. The only constraint is that the code runs without
+crashing and finishes within the time budget.
+
+**Simplicity criterion**: All else being equal, simpler is better. A small
+improvement that adds ugly complexity is not worth it. Conversely, removing
+something and getting equal or better results is a great outcome — that's a
+simplification win. A 0.001 val_bpb improvement that adds 20 lines of hacky
+code? Probably not worth it. A 0.001 val_bpb improvement from deleting code?
+Definitely keep. An improvement of ~0 but much simpler code? Keep.
+
+**The first run**: Your very first run should always be to establish the baseline,
+so you will run the training script as is.
+
+## Output format
+
+Once the script finishes it prints a summary like this:
+
+val_bpb:          0.997900
+training_seconds: 300.1
+total_seconds:    325.9
+peak_vram_mb:     45060.2
+mfu_percent:      39.80
+total_tokens_M:   499.6
+num_steps:        953
+num_params_M:     50.3
+depth:            8
+
+## Logging results
+
+When an experiment is done, log it to `results.tsv` (tab-separated, NOT
+comma-separated — commas break in descriptions).
+
+The TSV has a header row and 5 columns:
+commit, val_bpb, memory_gb, status, description
+
+## The experiment loop
+
+The experiment runs on a dedicated branch (e.g. `autoresearch/mar5`).
+
+LOOP FOREVER:
+
+1. Look at the git state: the current branch/commit we're on
+2. Tune `train.py` with an experimental idea by directly hacking the code.
+3. git commit
+4. Run the experiment: `uv run train.py > run.log 2>&1`
+5. Read out the results: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
+6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log`
+   to read the Python stack trace and attempt a fix.
+7. Record the results in the tsv
+8. If val_bpb improved (lower), you "advance" the branch, keeping the git commit
+9. If val_bpb is equal or worse, you git reset back to where you started
+
+**Timeout**: Each experiment should take ~5 minutes total. If a run exceeds
+10 minutes, kill it and treat it as a failure.
+
+**Crashes**: If a run crashes, use your judgment: If it's something dumb and
+easy to fix, fix it and re-run. If the idea itself is fundamentally broken,
+just skip it, log "crash" as the status, and move on.
+
+**NEVER STOP**: Once the experiment loop has begun, do NOT pause to ask the
+human if you should continue. Do NOT ask "should I keep going?" or "is this
+a good stopping point?". The human might be asleep, or gone from a computer
+and expects you to continue working *indefinitely* until you are manually
+stopped. You are autonomous.
+
+As an example use case, a user might leave you running while they sleep. If
+each experiment takes you ~5 minutes then you can run approx 12/hour, for a
+total of about 100 over the duration of the average human sleep. The user
+then wakes up to experimental results, all completed by you while they slept!
+```
+
+</Tabs.Tab>
+</Tabs>
 
 ## 루프의 구조
 
