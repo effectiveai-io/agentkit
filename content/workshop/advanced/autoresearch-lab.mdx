@@ -3,16 +3,37 @@ title: "실습: autoresearch 분석 + 인포그래픽"
 description: Gemini로 autoresearch 저장소를 분석하고, Canvas로 인포그래픽을 만듭니다
 ---
 
-import { Callout, Tabs } from 'nextra/components'
+import { Callout, Tabs, Steps } from 'nextra/components'
 
 # 실습: autoresearch 분석 + 인포그래픽 만들기
 
 ## Step 1: Gemini에 저장소 연결 (5분)
 
-1. [Gemini 웹](https://gemini.google.com) 접속
-2. 새 대화 시작
-3. GitHub 연결: [karpathy/autoresearch](https://github.com/karpathy/autoresearch) 저장소 연결
-4. 첫 질문:
+<Steps>
+
+### Gemini 웹 접속
+
+[gemini.google.com](https://gemini.google.com)에 접속합니다.
+
+### + 버튼 → 코드 가져오기
+
+입력창 왼쪽의 **+** 버튼을 누르고, 메뉴에서 **코드 가져오기**를 선택합니다.
+
+![Gemini 도구 메뉴 — 코드 가져오기 선택](/workshop/advanced/gemini-tools-menu.png)
+
+### 저장소 URL 입력 → 가져오기
+
+"GitHub 저장소 또는 브랜치 URL" 입력란에 아래 URL을 붙여넣고 **가져오기**를 클릭합니다.
+
+```
+https://github.com/karpathy/autoresearch
+```
+
+![코드 가져오기 — autoresearch 저장소 URL 입력](/workshop/advanced/gemini-import-code.png)
+
+### 첫 질문 입력
+
+저장소가 연결되면, 아래 질문을 입력합니다:
 
 ```
 이 저장소의 program.md와 train.py, prepare.py를 읽고,
@@ -22,6 +43,8 @@ import { Callout, Tabs } from 'nextra/components'
 - 실험 루프가 어떻게 반복되는지
 - "NEVER STOP"이라는 지시가 왜 필요한지
 ```
+
+</Steps>
 
 **관찰 포인트:**
 - `program.md`가 AI의 행동을 지시하는 **유일한 파일**이라는 것
