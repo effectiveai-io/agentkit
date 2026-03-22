@@ -4,7 +4,7 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './global.css'
 import type { ReactNode } from 'react'
-import { TimerProvider } from './components/TimerContext'
+import { Providers } from './components/Providers'
 import { TimerToggle } from './components/TimerToggle'
 
 export const metadata = {
@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="ko" dir="ltr" suppressHydrationWarning>
       <Head />
       <body>
-        <TimerProvider>
+        <Providers>
           <Layout
             navbar={navbar}
             footer={footer}
@@ -60,7 +60,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           >
             {children}
           </Layout>
-        </TimerProvider>
+        </Providers>
       </body>
     </html>
   )
