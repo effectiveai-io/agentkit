@@ -1,6 +1,6 @@
 ---
 title: 워크숍 심화 개요
-description: autoresearch 루프로 내 업무 지침서를 3사이클 개선하는 3시간 워크숍
+description: autoresearch 루프를 업무 프롬프트에 적용하는 3시간 워크숍
 ---
 
 import { Steps, Callout, Cards } from 'nextra/components'
@@ -9,78 +9,70 @@ import { Steps, Callout, Cards } from 'nextra/components'
 
 <div className="workshop-narrative">
 
-> **지침서 작성 → AI가 업무 결과물 생성 → 평가 → 지침서 개선 → 반복**
+> **autoresearch에서 사람은 코드를 건드리지 않는다. 오직 `program.md`만 다듬는다.**
 
-이 워크숍에서는 Andrej Karpathy의 <strong>autoresearch</strong> 프로젝트에서 영감을 받은 루프를 적용합니다.
-코드를 짜는 대신 <strong>AI에게 줄 업무 지침서를 3사이클 반복 개선</strong>하고,
-매 사이클마다 점수가 오르는 것을 직접 체감합니다.
+이 워크숍에서는 Andrej Karpathy의 <strong>autoresearch</strong>를 직접 분석하고,
+같은 구조를 내 업무 프롬프트에 적용합니다.
+AI가 프롬프트를 <strong>자율적으로 개선하는 루프</strong>를 돌리고,
+사람은 그 방향을 조정하는 경험을 합니다.
 
 </div>
 
 ## 3시간, 핵심 목표
 
 <Callout type="default">
-**"월요일 아침에 바로 쓸 수 있는 업무 지침서를 만들어 간다."**
+**"AI가 스스로 개선하는 루프를 설계하고, 그 방향을 조정하는 경험을 한다."**
 
-도구 체험이 아닙니다. 내 반복 업무에 대한 AI 지침서를 만들고,
-3번의 개선 사이클을 거쳐 실제로 품질이 올라가는 것을 측정합니다.
+도구 체험이 아닙니다. autoresearch의 구조를 이해하고,
+같은 구조로 내 업무 프롬프트를 AI가 자동 개선하게 만듭니다.
+사람은 코드 대신 <strong>지시서(program.md)</strong>를 프로그래밍합니다.
 </Callout>
-
-구체적으로:
-- 내 반복 업무의 <strong>평가 기준</strong>을 정의한다
-- 지침서를 3사이클 돌려 <strong>개선 곡선</strong>을 체감한다
-- 교환 테스트로 <strong>"남이 써도 작동하는가?"</strong>를 검증한다
-- 우아한형제들 실제 사례와 연결해 <strong>팀 자산화 경로</strong>를 그린다
 
 ## 핵심 경험
 
-> **"0점 → 4점 → 8점" — 이 곡선을 직접 경험하는 것이 이 워크숍의 전부입니다.**
+1. **autoresearch를 읽고, 초등학생도 이해하게 시각화한다** — Gemini Canvas
+2. **AI가 스스로 프롬프트를 개선하는 것을 지켜본다** — 자동 사이클
+3. **AI의 개선 방향이 틀리면, 지시를 수정해서 다시 돌린다** — program.md 프로그래밍
 
-Cycle 1에서 빈 지침서로 AI에게 시키면, 일반적이고 뻔한 결과가 나옵니다.
-Cycle 2에서 팀 컨벤션을 넣으면, 확실히 구체적인 결과가 나옵니다.
-Cycle 3에서 도메인 맥락까지 넣으면, 전문가 수준의 결과가 나옵니다.
+## 실습 도구
 
-이 경험이 곧 <strong>"지침서를 프로그래밍한다"</strong>는 것의 의미입니다.
+| 도구 | 용도 |
+|------|------|
+| Gemini 웹 + GitHub 연결 | autoresearch 저장소 분석 + 자동 개선 사이클 |
+| Gemini Canvas | autoresearch 개념 시각화 앱 제작 |
+| GitHub 웹 | prompt-workshop 저장소 fork + 프롬프트 수정 |
 
-## 4세션 흐름
+## 3 Phase 흐름
 
 <Steps>
-### autoresearch 루프 이해하기
+### Phase 1: autoresearch 이해하기
 
-<span className="step-tools">15분</span>
+<span className="step-tools">Gemini + GitHub 연결 · Gemini Canvas</span>
 
-Karpathy의 autoresearch가 어떻게 작동하는지,
-그리고 이것을 우리 업무에 어떻게 적용하는지 이해합니다.
-우아한형제들의 테스트 자동화 사례로 "AI에게 구조를 줘야 하는 이유"를 확인합니다.
+Gemini에 autoresearch 저장소를 연결해서 구조를 파악하고,
+핵심 개념을 <strong>"초등학생도 이해할 수 있는"</strong> 시각화 앱으로 만듭니다.
+옆 사람과 공유하면서 이해를 다집니다.
 
-[autoresearch 루프 →](/workshop/advanced/autoresearch)
+[Phase 1 시작하기 →](/workshop/advanced/autoresearch)
 
-### 지침서 개선 사이클 3회전
+### Phase 2: 프롬프트 자동 개선 실습
 
-<span className="step-tools">75분 (준비 25분 + 사이클 50분)</span>
+<span className="step-tools">GitHub fork · Gemini + GitHub 연결</span>
 
-내 반복 업무를 하나 선택하고, 평가 기준을 정의합니다.
-그리고 지침서 v0 → v1 → v2, 3사이클을 돌리며 매번 점수를 기록합니다.
+[prompt-workshop](https://github.com/effectiveai-io/prompt-workshop) 저장소를 fork하고 본인 맥락에 맞게 수정합니다.
+Gemini에 연결하면 AI가 `program.md`의 지시를 따라 <strong>프롬프트를 자동으로 3사이클 개선</strong>합니다.
+사람은 AI의 개선 방향을 관찰하고, 필요하면 방향을 수정합니다.
 
-[지침서 개선 사이클 →](/workshop/advanced/cycle)
+[Phase 2 시작하기 →](/workshop/advanced/cycle)
 
-### 교환 테스트
+### Phase 3: 교환 테스트 + 축적으로 연결
 
-<span className="step-tools">30분</span>
+<span className="step-tools">교환 테스트 · 우형 기술블로그</span>
 
-짝과 지침서를 교환해서 "내가 아닌 사람이 써도 작동하는가?"를 테스트합니다.
-개인 실험에서 팀 자산으로 넘어가는 경계선이 여기입니다.
+AI가 개선한 최종 프롬프트를 짝과 교환해서 <strong>"남이 써도 작동하는가?"</strong>를 검증합니다.
+우아한형제들 기술 블로그 사례와 연결해서 실무 적용 경로를 그립니다.
 
-[교환 테스트 →](/workshop/advanced/exchange)
-
-### 반복에서 축적으로
-
-<span className="step-tools">50분 (사례 25분 + 회고 25분)</span>
-
-오늘 경험한 사이클을 팀과 조직으로 확장하는 그림을 그립니다.
-우아한형제들 기술 블로그 사례 3편과 연결하고, 액션플랜을 작성합니다.
-
-[반복에서 축적으로 →](/workshop/advanced/accumulation)
+[Phase 3 시작하기 →](/workshop/advanced/exchange)
 
 </Steps>
 
@@ -92,11 +84,12 @@ Karpathy의 autoresearch가 어떻게 작동하는지,
 
 시작 전에 아래를 확인해주세요.
 
-- [x] ChatGPT 또는 Gemini 로그인 완료
+- [x] GitHub 계정 로그인 완료 (fork 위해 필요)
+- [x] Gemini 웹 (gemini.google.com) 접속 확인
 - [x] (선택) 사전 설문에서 적은 "반복 업무"를 구체화해오기
 
 <Callout type="info">
-이 워크숍은 <strong>ChatGPT 커스텀 지침</strong> 또는 <strong>Gemini Gems</strong>만 있으면 됩니다.
+이 워크숍은 <strong>Gemini 웹 + GitHub 연결</strong>만 있으면 됩니다.
 CLI 환경이나 특별한 도구 설치가 필요하지 않습니다.
 </Callout>
 
