@@ -1,0 +1,164 @@
+---
+title: 워크숍 기본 개요
+description: 만든다 → 반복을 발견한다 → 반복을 자산으로 만든다
+---
+
+import { Steps, Callout, Cards } from 'nextra/components'
+
+# 워크숍 기본 개요
+
+<div className="workshop-narrative">
+
+> **만든다 (양) → 반복을 발견한다 → 반복을 자산으로 만든다 (질)**
+
+이 워크숍에서는 <strong>프롬프트 증강기</strong>라는 하나의 앱을 세 가지 도구로 만들어봅니다.
+같은 앱을 반복해서 만들면서 "AI에게 매번 하는 말"을 발견하고,
+그 반복을 <strong>AGENTS.md</strong>라는 파일 하나에 담아 자산으로 만드는 경험을 합니다.
+
+</div>
+
+## 왜 지금 이 워크숍인가?
+
+2025년 2월, <strong>안드레 카파시</strong>(Andrej Karpathy)가 <strong>"바이브 코딩"</strong>(Vibe Coding)이라는 용어를 만들었습니다.
+"코드를 잊고 분위기에 몸을 맡겨라"라는 접근이었습니다.
+
+1년 뒤인 2026년, 카파시는 직접 그 용어를 폐기하고 <strong>"에이전틱 엔지니어링"</strong>(Agentic Engineering)이라는 새로운 개념을 제안합니다.
+
+<Callout type="info" emoji="💬">
+**Andrej Karpathy, [바이브 코딩 1주년 회고](https://x.com/karpathy/status/2019137879310836075) (2026.02)**
+
+*"당시에는 LLM 능력이 낮아서 바이브 코딩은 주로 재미삼아 하는 일회성 프로젝트에 썼다...
+오늘날, LLM 에이전트를 통한 프로그래밍은 전문가들의 기본 워크플로우가 되어가고 있다. 다만 더 많은 감독과 검토가 따른다.
+에이전트 활용의 레버리지는 취하되, 소프트웨어 품질에는 타협이 없어야 한다."*
+
+*"'Agentic' — 99%의 시간 동안 코드를 직접 쓰지 않고, 에이전트를 오케스트레이션하며 감독하는 것이다.
+'Engineering' — 거기에는 기술과 과학, 전문성이 있다. 배울 수 있고, 더 잘할 수 있는 것이다."*
+</Callout>
+
+바이브 코딩이 "일단 만들어봐"에 가까웠다면,
+에이전틱 엔지니어링은 <strong>"AI에게 어떻게 일을 시킬지 설계하는 것"</strong>에 가깝습니다.
+
+카파시는 구체적인 산출물을 지정하지는 않았지만, 2026년 3월 공개한 [autoresearch](https://github.com/karpathy/autoresearch) 프로젝트에서 <strong>행동으로 보여줍니다</strong>:
+
+<Callout type="default" emoji="🔬">
+**카파시의 autoresearch — 에이전틱 엔지니어링의 실제**
+
+- 사람은 `program.md`(마크다운 지시서)를 반복적으로 다듬는다
+- AI 에이전트는 그 지시에 따라 코드(`train.py`)를 자율적으로 수정하고 실험한다
+- 카파시는 이 `.md` 파일을 <strong>"essentially a super lightweight skill"</strong>이라고 표현
+- 사람은 파이썬 파일을 직접 건드리지 않는다 — 오직 `.md` 지시서만 개선한다
+
+→ **사람의 일 = 코드 작성이 아니라, AI가 따를 지시를 반복적으로 다듬는 것**
+</Callout>
+
+이 워크숍에서는 같은 원리를 적용합니다.
+세 도구로 같은 앱을 반복해서 만들며 "AI에게 매번 하는 말"을 발견하고,
+그 반복을 <strong>AGENTS.md</strong>라는 재사용 가능한 지시 파일로 정리합니다.
+
+### 이미 업계 표준이 되고 있습니다
+
+이 워크숍에서는 대표적인 이름으로 <strong>AGENTS.md</strong>를 사용하지만,
+"AI에게 나의 작업 방식을 알려주는 재사용 가능한 지시서"라는 개념은 이미 업계 표준으로 자리잡고 있습니다.
+
+[AGENTS.md](https://agents.md/)는 Google, OpenAI, GitHub Copilot, Cursor 등이 공동으로 만든 오픈 포맷으로,
+현재 [Linux Foundation 산하 Agentic AI Foundation](https://github.com/agentsmd/agents.md)이 관리하며 60,000개 이상의 프로젝트에서 사용 중입니다.
+
+<Callout type="default" emoji="🗂️">
+**도구마다 이름은 다르지만, 핵심은 같습니다**
+
+| 도구 | 지시 파일 | 공식 문서 |
+|------|-----------|-----------|
+| Claude Code | `CLAUDE.md` | [code.claude.com/docs/en/memory](https://code.claude.com/docs/en/memory) |
+| OpenAI Codex | `AGENTS.md` | [developers.openai.com/codex/guides/agents-md](https://developers.openai.com/codex/guides/agents-md/) |
+| GitHub Copilot | `AGENTS.md` | [GitHub 블로그 — 2,500개 분석](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/) |
+| Cursor | `.cursorrules` | Cursor 설정 |
+| Lovable | Knowledge | Lovable 프로젝트 설정 |
+| Karpathy autoresearch | `program.md` | [github.com/karpathy/autoresearch](https://github.com/karpathy/autoresearch) |
+
+→ 오늘 워크숍에서 만드는 내용은 <strong>어떤 도구를 쓰든 바로 적용할 수 있는 자산</strong>이 됩니다.
+</Callout>
+
+## 3세션 흐름
+
+<Steps>
+### 세션 1: 만든다 — 양을 늘린다
+
+<span className="step-tools">Gemini Canvas · Google AI Studio</span>
+
+Gemini Canvas로 빠르게 프로토타입을 만들고, Google AI Studio Build로 같은 앱을 한 번 더 만듭니다.
+같은 목표에 도구만 바꾸면서 "AI에게 어떻게 요청하면 좋은지" 감을 잡습니다.
+
+[세션 1 시작하기 →](/workshop/basic/session-1)
+
+### 세션 2: 만든다 + 반복을 발견한다
+
+<span className="step-tools">Lovable</span>
+
+Lovable로 프롬프트 증강기의 완성 버전을 만들고, Google 인증과 DB까지 붙여봅니다.
+그리고 세 도구에서 AI에게 <strong>반복했던 말</strong>을 찾아냅니다. 이게 다음 세션의 재료입니다.
+
+[세션 2 시작하기 →](/workshop/basic/session-2)
+
+### 세션 3: 반복을 자산으로 만든다
+
+<span className="step-tools">Lovable (Knowledge)</span>
+
+발견한 반복을 AGENTS.md 형식으로 정리하고,
+Lovable의 Knowledge에 넣어 <strong>Before/After 차이</strong>를 직접 확인합니다.
+마지막으로 내가 만든 증강기를 활용해 AGENTS.md를 더 다듬어봅니다.
+
+<Callout type="info" emoji="📄">
+**AGENTS.md란?**
+
+AI에게 "나는 이렇게 일한다"를 알려주는 파일입니다.
+한 번 작성하면 매번 반복해서 말하지 않아도 AI가 알아서 적용합니다.
+사용하는 도구에 따라 `CLAUDE.md`, `.cursorrules`, Knowledge 등 이름이 달라지지만,
+핵심은 같습니다 — <strong>반복을 문서화한 재사용 가능한 지시서</strong>.
+</Callout>
+
+[세션 3 시작하기 →](/workshop/basic/session-3)
+
+</Steps>
+
+---
+
+<div className="workshop-prep">
+
+## 준비물 체크
+
+시작 전에 아래를 확인해주세요.
+
+- [x] Google 계정 (개인) 로그인 완료
+- [x] GitHub 계정 로그인 완료
+- [x] Lovable 워크스페이스 초대 수락 완료 (빗썸 실습용 워크스페이스)
+- [x] [딸깍 사이트](https://dalgak.com/) 접속 확인
+
+</div>
+
+---
+
+## 워크숍 이후 — 더 깊이 가기
+
+워크숍에서 경험한 "만들고 → 반복 발견 → 자산화" 흐름을 실무에 연결하고 싶다면,
+아래 두 섹션을 활용해보세요.
+
+<Cards>
+  <Cards.Card
+    title="📂 실무 사례"
+    description="컬리, 채널톡, 당근, 우아한형제들 등 국내 개발팀의 AI 도입 시행착오와 성과. 워크숍에서 배운 방법이 현장에서 어떻게 쓰이는지 확인할 수 있습니다."
+    href="/cases"
+  />
+  <Cards.Card
+    title="📚 학습 자료"
+    description="Anthropic Academy, 프롬프트 엔지니어링 가이드, CodePath AI 커리큘럼 분석 등. 에이전틱 엔지니어링 시대에 필요한 기초 역량을 쌓는 자료 모음입니다."
+    href="/resources"
+  />
+</Cards>
+
+<Callout type="info" emoji="💡">
+**추천 활용 순서**
+
+1. 워크숍 3세션을 먼저 완주하세요
+2. [실무 사례](/cases)에서 관심 있는 도메인의 사례를 읽어보세요 — 특히 [컬리의 바이브코딩 전략](/cases/kurly-vibe-coding)과 [우아한형제들의 AI 자산화](/cases/woowahan-ai-asset)가 오늘 실습과 직접 연결됩니다
+3. [학습 자료](/resources)에서 프롬프트 엔지니어링 기초를 다지면, 더 정교한 AGENTS.md를 만들 수 있습니다
+</Callout>
