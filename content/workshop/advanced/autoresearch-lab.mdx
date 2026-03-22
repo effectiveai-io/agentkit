@@ -1,0 +1,69 @@
+---
+title: "실습: autoresearch 분석 + 시각화"
+description: Gemini로 autoresearch 저장소를 분석하고, Canvas로 시각화 앱을 만듭니다
+---
+
+import { Callout } from 'nextra/components'
+
+# 실습: autoresearch 분석 + Canvas 시각화
+
+## Step 1: Gemini에 저장소 연결 (5분)
+
+1. [Gemini 웹](https://gemini.google.com) 접속
+2. 새 대화 시작
+3. GitHub 연결: `karpathy/autoresearch` 저장소 연결
+4. 첫 질문:
+
+```
+이 저장소의 program.md와 train.py, prepare.py를 읽고,
+이 프로젝트가 어떻게 작동하는지 한국어로 설명해줘.
+특히:
+- 사람이 하는 일과 AI가 하는 일을 구분해서
+- 실험 루프가 어떻게 반복되는지
+- "NEVER STOP"이라는 지시가 왜 필요한지
+```
+
+**관찰 포인트:**
+- `program.md`가 AI의 행동을 지시하는 **유일한 파일**이라는 것
+- 평가 기준(`val_bpb`)과 판단 기준(단순성, keep/discard)이 어떻게 설계되어 있는지
+- "사람은 코드를 안 건드린다. 지시서만 다듬는다"는 핵심
+
+---
+
+## Step 2: Gemini Canvas로 시각화 앱 만들기 (15분)
+
+> "어려운 걸 쉽게 설명할 수 있을 때, 진짜 이해한 겁니다."
+
+지금 이해한 autoresearch의 작동 방식을 Gemini Canvas로 시각화하는 웹앱을 만들어보세요.
+
+**목표: 초등학생도 이해할 수 있을 만큼 쉽게!**
+
+만들 수 있는 것 예시 (참고만, 자유롭게 만드세요):
+
+- <strong>"AI 연구원의 하루"</strong> — program.md가 바뀌면 AI의 행동이 어떻게 달라지는지 보여주는 인터랙티브 스토리
+- <strong>autoresearch 루프 시뮬레이터</strong> — 버튼을 누르면 AI가 실험하고 점수가 올라가는 과정을 시각적으로 보여주기
+- <strong>"AI에게 지시하기" 놀이</strong> — 지시를 바꿔가며 AI의 결과가 달라지는 것을 체험하는 시뮬레이션
+
+<Callout type="info">
+5분 안에 만들기. 완성도보다 핵심 전달이 중요합니다.
+Canvas 링크를 옆 사람에게 공유할 수 있게 준비하세요.
+</Callout>
+
+---
+
+## Step 3: 옆 사람과 공유 + 대화 (10분)
+
+2인 1조로:
+1. 서로 만든 시각화 앱을 보여주기 (각 2분)
+2. "이 부분이 핵심을 잘 잡았다" / "이건 좀 다르게 설명하면 더 좋겠다" 피드백
+3. **연결 질문**: "autoresearch에서 program.md가 하는 역할을, 여러분의 업무에 적용하면 뭐가 될까요?"
+
+<Callout type="info">
+이 질문이 Phase 2로 넘어가는 브릿지입니다.
+
+`program.md` = 코드 리뷰 지침서 / 기획서 리뷰 기준 / TC 설계 규칙
+</Callout>
+
+---
+
+[Phase 2 개념: prompt-workshop 구조 →](/workshop/advanced/cycle)

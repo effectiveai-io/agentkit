@@ -1,0 +1,118 @@
+---
+title: "실습: fork + 자동 개선 사이클"
+description: prompt-workshop을 fork하고, Gemini가 자동으로 프롬프트를 개선하게 만듭니다
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 실습: fork + 자동 개선 사이클
+
+<Steps>
+
+## Step 1: fork + 본인 맥락 수정 (15분)
+
+### 저장소 fork
+
+1. [prompt-workshop](https://github.com/effectiveai-io/prompt-workshop) 접속
+2. 우측 상단 **Fork** 클릭 → 본인 GitHub 계정으로 fork
+
+### 본인 직군에 맞는 파일 선택
+
+| 직군 | 파일 |
+|------|------|
+| BE/FE 개발 | `prompts/code-review.md` |
+| QA | `prompts/test-case.md` |
+| PM/기획 | `prompts/spec-review.md` |
+| 공통 | `prompts/document-draft.md` |
+
+### GitHub 웹에서 수정
+
+1. fork한 저장소에서 선택한 파일 클릭
+2. 연필 아이콘(Edit) 클릭
+3. 본인 팀 맥락에 맞게 수정:
+   - 팀명, 서비스명을 본인 것으로
+   - "팀 컨벤션" 섹션에 실제 규칙 추가
+   - "도메인 맥락" 섹션에 우리 서비스 특수 규칙 추가
+4. Commit changes
+
+<Callout type="info">
+지금 실제 팀 코드가 없으니 완벽하지 않아도 됩니다.
+돌아가서 실제 맥락을 추가하면 진짜 자산이 됩니다.
+</Callout>
+
+## Step 2: Gemini에 연결 + 수동 1사이클 (15분)
+
+### 저장소 연결
+
+Gemini 웹에서 새 대화를 시작하고, fork한 저장소를 연결합니다.
+
+### 수동 사이클 (감 잡기)
+
+```
+이 저장소의 구조를 먼저 파악해줘.
+그리고 prompts/code-review.md를 사용해서
+samples/sample-code.md의 코드를 리뷰해줘.
+리뷰한 결과를 evaluation/code-review.md 기준으로 자체 채점해줘.
+```
+
+**관찰 포인트:**
+- AI가 내 프롬프트를 어떻게 해석했는지
+- 평가 기준 대비 어떤 점이 부족한지
+
+## Step 3: 자동 개선 사이클 실행 (20분)
+
+<Callout type="warning">
+**여기가 autoresearch 본질을 경험하는 순간입니다.**
+
+사람이 직접 고치는 게 아니라, AI가 스스로 개선 루프를 돌게 시킵니다.
+</Callout>
+
+### 메타 프롬프트
+
+```
+이 저장소의 program.md를 읽고 지시대로 따라해줘.
+prompts/code-review.md를 개선 대상으로,
+evaluation/code-review.md를 평가 기준으로,
+samples/sample-code.md를 테스트 시나리오로 사용해서
+자동 개선 사이클을 3회 실행해줘.
+```
+
+→ Gemini가 `program.md`의 지시를 따라 자동으로:
+1. 현재 프롬프트로 결과물 생성
+2. 평가 기준으로 자체 채점
+3. 점수가 낮은 항목 분석 → 프롬프트 개선
+4. 개선된 프롬프트로 다시 반복
+
+### 관찰 + 방향 조정
+
+AI가 돌아가는 동안 관찰합니다:
+- AI가 어떤 방향으로 개선하고 있는지
+- 원하는 방향인지, 아닌지
+
+원하는 방향이 아니면 <strong>추가 지시로 조정</strong>합니다:
+
+```
+보안 관련 항목의 점수가 계속 낮은데,
+다음 사이클에서는 보안 관련 규칙을 우선적으로 강화해줘.
+특히 금융 서비스에서 민감정보 로깅 관련 규칙을 추가해줘.
+```
+
+> **이것이 `program.md`를 프로그래밍하는 경험입니다.**
+
+## Step 4: 결과 확인 + 저장 (10분)
+
+AI가 만든 최종 버전을 확인합니다:
+- 마음에 드는 개선 사항 체크
+- 불필요한 변경 제거
+- 최종 프롬프트를 GitHub에 커밋하거나 메모장에 저장
+
+</Steps>
+
+<Callout type="info">
+autoresearch는 밤새 100번 돌립니다. 여러분은 3번 돌렸는데도 점수가 올랐죠.
+돌아가서 실제 코드, 실제 기획서를 `samples/`에 넣고 다시 돌리면 어떻게 될까요?
+</Callout>
+
+---
+
+[Phase 3: 교환 테스트 + 축적 →](/workshop/advanced/exchange)

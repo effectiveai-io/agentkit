@@ -1,11 +1,11 @@
 ---
-title: autoresearch 루프
-description: Karpathy의 autoresearch에서 영감을 받아 업무 지침서 개선 루프를 설계합니다
+title: autoresearch란
+description: Karpathy의 autoresearch 프로젝트 — AI가 밤새 자율적으로 실험하는 구조
 ---
 
 import { Callout, Tabs } from 'nextra/components'
 
-# autoresearch 루프
+# autoresearch란
 
 ## Karpathy의 autoresearch
 
@@ -34,7 +34,100 @@ Karpathy는 이 `.md` 파일을 이렇게 표현합니다:
 
 > *"The `program.md` file is essentially a super lightweight skill."*
 
-### program.md 전문
+## 루프의 구조
+
+```
+program.md (사람이 작성)
+    ↓
+AI가 train.py 수정
+    ↓
+5분간 학습
+    ↓
+val_bpb 측정 (낮을수록 좋음)
+    ↓
+결과 보고 → program.md 개선
+    ↓
+(반복)
+```
+
+밤새 돌리면 약 100번의 실험이 진행됩니다.
+매 실험마다 `val_bpb`가 측정되고, 좋은 결과는 유지됩니다.
+
+핵심은 세 가지입니다:
+
+1. **하나의 파일**만 AI가 수정한다 (`train.py`)
+2. **하나의 지표**로 평가한다 (`val_bpb`)
+3. **고정된 시간 예산** 안에서 반복한다 (5분)
+
+## 업무에 적용하면?
+
+같은 구조를 우리 업무에 대입합니다.
+
+| autoresearch | 오늘 워크숍 |
+|---|---|
+| `train.py` (AI가 수정하는 코드) | 업무 결과물 (AI가 생성하는 코드리뷰, 문서, TC) |
+| `program.md` (사람이 다듬는 지시서) | <strong>내 업무 프롬프트</strong> (GitHub 저장소에 관리) |
+| `val_bpb` (단일 평가 지표) | <strong>체크리스트 점수</strong> (0~10점) |
+| 5분 고정 시간 예산 | AI가 자동으로 3사이클 |
+| 밤새 100번 자동 반복 | Gemini가 자동 개선 루프 실행 |
+
+```
+내 프롬프트 (사람이 작성)
+    ↓
+AI가 업무 결과물 생성
+    ↓
+평가 기준으로 자체 채점
+    ↓
+AI가 프롬프트 개선안 도출
+    ↓
+(자동 반복)
+```
+
+<Callout type="info">
+**핵심 메시지**
+
+autoresearch에서 사람이 프로그래밍하는 대상은 Python이 아니라 `program.md`입니다.
+오늘 워크숍에서 여러분이 프로그래밍하는 대상은 코드가 아니라 <strong>업무 프롬프트</strong>입니다.
+</Callout>
+
+## 우아한형제들 사례: 왜 구조를 줘야 하는가
+
+이 루프가 왜 작동하는지, 우아한형제들의 실제 사례가 보여줍니다.
+
+### AI와 함께하는 테스트 자동화: 플러그인 개발기
+
+> 출처: [우아한형제들 기술블로그](https://techblog.woowahan.com/24568/) (강규한, 2025.12)
+
+커머스 백엔드 개발자가 AI로 테스트 코드를 만들려 했습니다.
+
+**1차 시도: AI에게 "테스트 코드 작성해줘"**
+- 10개 클래스 테스트 → 컴파일 성공률 <strong>10%</strong> (9/10 실패)
+- import 오타, 존재하지 않는 클래스 참조, 타입 불일치
+
+**2차 시도: 구조를 먼저 제공 + AI는 구현만**
+- IntelliJ 플러그인이 코드를 분석해서 TODO 템플릿을 만들고
+- AI는 그 템플릿 안의 TODO만 구현
+- 컴파일 성공률 <strong>95%</strong>, 작업 시간 10분 → 3분
+
+| 지표 | 이전 | 이후 |
+|------|------|------|
+| 클래스당 작업 시간 | 10분 | 3분 (70% 단축) |
+| 컴파일 성공률 | 85% | 95% |
+| 메서드 커버리지 | 67% | 95% |
+
+<Callout type="warning">
+**이것이 오늘 워크숍에서 프롬프트를 다듬는 이유입니다.**
+
+"코드 리뷰해줘"라고만 하면 (= 빈 프롬프트) → 일반적이고 뻔한 결과.
+"이 구조와 기준으로 리뷰해줘"라고 하면 (= 잘 쓴 프롬프트) → 전문가 수준의 결과.
+
+테스트 자동화 플러그인이 성공한 것과 같은 원리입니다.
+<strong>AI의 한계를 인정하고, 구조를 줘야 합니다.</strong>
+</Callout>
+
+---
+
+## program.md 전문
 
 autoresearch의 핵심인 `program.md` 전문입니다.
 사람이 AI에게 주는 유일한 지시서 — 이것이 autoresearch의 전부입니다.
@@ -80,28 +173,13 @@ LLM이 스스로 연구를 수행하는 실험입니다.
 - 새 패키지 설치나 의존성 추가. `pyproject.toml`에 있는 것만 사용 가능합니다.
 - 평가 코드 수정. `prepare.py`의 `evaluate_bpb` 함수가 ground truth 지표입니다.
 
-**목표는 단순합니다: 가장 낮은 val_bpb를 달성하는 것.** 시간 예산이 고정이므로 학습 시간을
-걱정할 필요 없습니다 — 항상 5분입니다. 모든 것이 허용됩니다: 아키텍처, 옵티마이저,
-하이퍼파라미터, 배치 크기, 모델 크기를 바꾸세요. 유일한 제약은 코드가 크래시 없이 실행되고
-시간 예산 내에 완료되는 것입니다.
+**목표는 단순합니다: 가장 낮은 val_bpb를 달성하는 것.**
 
-**단순성 기준**: 다른 조건이 같다면 단순한 것이 낫습니다. 복잡성을 추가하는 작은 개선은
-가치가 없습니다. 반대로, 무언가를 제거하고 같거나 더 나은 결과를 얻으면 좋은 결과입니다
-— 단순화 승리. val_bpb 0.001 개선이 20줄의 지저분한 코드를 추가한다면? 아마 가치 없습니다.
-코드를 삭제해서 0.001 개선? 반드시 유지. ~0 개선이지만 훨씬 단순한 코드? 유지.
-
-**첫 번째 실행**: 첫 실행은 항상 베이스라인 확립을 위해 학습 스크립트를 있는 그대로 실행합니다.
-
-## 결과 로깅
-
-실험이 끝나면 `results.tsv`에 기록합니다 (탭으로 구분, 쉼표 아님).
-
-TSV는 헤더 행과 5개 컬럼을 가집니다:
-commit, val_bpb, memory_gb, status, description
+**단순성 기준**: 다른 조건이 같다면 단순한 것이 낫습니다.
+복잡성을 추가하는 작은 개선은 가치가 없습니다.
+코드를 삭제해서 같거나 더 나은 결과를 얻으면 — 반드시 유지.
 
 ## 실험 루프
-
-실험은 전용 브랜치에서 실행됩니다 (예: `autoresearch/mar5`).
 
 영원히 반복:
 
@@ -109,33 +187,17 @@ commit, val_bpb, memory_gb, status, description
 2. 실험 아이디어로 `train.py`를 직접 수정
 3. git 커밋
 4. 실험 실행: `uv run train.py > run.log 2>&1`
-5. 결과 읽기: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
-6. grep 출력이 비었으면 크래시. `tail -n 50 run.log`로 스택 트레이스를 읽고 수정 시도.
-   몇 번 시도해도 안 되면 포기.
+5. 결과 읽기: `grep "^val_bpb:" run.log`
+6. 크래시 시 스택 트레이스 읽고 수정 시도
 7. TSV에 결과 기록
-8. val_bpb가 개선되면(낮아지면) 브랜치를 "전진"시키고 커밋 유지
-9. val_bpb가 같거나 나쁘면 시작 지점으로 git reset
-
-아이디어는 당신이 완전히 자율적인 연구자라는 것입니다. 작동하면 유지, 안 되면 폐기.
-브랜치를 전진시키며 반복합니다.
-
-**타임아웃**: 각 실험은 총 ~5분 소요. 10분 초과 시 kill하고 실패 처리.
-
-**크래시**: 크래시 발생 시 판단에 따라: 타이포 같은 단순 실수면 수정 후 재실행.
-아이디어 자체가 근본적으로 문제면 건너뛰고 TSV에 "crash" 기록.
+8. val_bpb가 개선되면 브랜치 전진, 아니면 git reset
 
 **절대 멈추지 마세요**: 실험 루프가 시작되면 사람에게 계속할지 묻지 마세요.
-"계속할까요?" "여기서 멈출까요?" 묻지 마세요.
-사람은 자고 있거나 컴퓨터 앞에 없을 수 있으며, 당신이 수동으로 멈출 때까지
-**무한히** 계속 작업하기를 기대합니다.
-당신은 자율적입니다. 아이디어가 떨어지면 더 열심히 생각하세요
-— 코드에 참조된 논문을 읽고, 범위 내 파일을 다시 읽어 새로운 각도를 찾고,
-이전의 아깝게 실패한 것들을 조합하고, 더 급진적인 아키텍처 변경을 시도하세요.
-루프는 사람이 중단할 때까지 실행됩니다, 마침표.
+사람은 자고 있을 수 있습니다. 당신은 자율적입니다.
+루프는 사람이 중단할 때까지 실행됩니다.
 
-사용 예시: 사용자가 잠자는 동안 실행할 수 있습니다.
-각 실험이 ~5분이면 시간당 약 12회, 평균 수면 시간 동안 약 100회 실행 가능합니다.
-사용자가 아침에 일어나면 실험 결과가 모두 완료되어 있습니다!
+사용 예시: 사용자가 잠자는 동안 시간당 약 12회, 수면 중 약 100회 실험.
+아침에 일어나면 결과가 모두 완료되어 있습니다!
 ```
 
 </Tabs.Tab>
@@ -161,246 +223,52 @@ To set up a new experiment, work with the user to:
 4. **Verify data exists**: Check that `~/.cache/autoresearch/` contains data shards
    and a tokenizer. If not, tell the human to run `uv run prepare.py`.
 5. **Initialize results.tsv**: Create `results.tsv` with just the header row.
-   The baseline will be recorded after the first run.
 6. **Confirm and go**: Confirm setup looks good.
-
-Once you get confirmation, kick off the experimentation.
 
 ## Experimentation
 
 Each experiment runs on a single GPU. The training script runs for a **fixed time
 budget of 5 minutes** (wall clock training time, excluding startup/compilation).
-You launch it simply as: `uv run train.py`.
 
 **What you CAN do:**
-- Modify `train.py` — this is the only file you edit. Everything is fair game:
-  model architecture, optimizer, hyperparameters, training loop, batch size,
-  model size, etc.
+- Modify `train.py` — this is the only file you edit.
 
 **What you CANNOT do:**
 - Modify `prepare.py`. It is read-only.
 - Install new packages or add dependencies.
-  You can only use what's already in `pyproject.toml`.
 - Modify the evaluation harness.
-  The `evaluate_bpb` function in `prepare.py` is the ground truth metric.
 
-**The goal is simple: get the lowest val_bpb.** Since the time budget is fixed,
-you don't need to worry about training time — it's always 5 minutes. Everything
-is fair game: change the architecture, the optimizer, the hyperparameters, the
-batch size, the model size. The only constraint is that the code runs without
-crashing and finishes within the time budget.
+**The goal is simple: get the lowest val_bpb.**
 
-**Simplicity criterion**: All else being equal, simpler is better. A small
-improvement that adds ugly complexity is not worth it. Conversely, removing
-something and getting equal or better results is a great outcome — that's a
-simplification win. A 0.001 val_bpb improvement that adds 20 lines of hacky
-code? Probably not worth it. A 0.001 val_bpb improvement from deleting code?
-Definitely keep. An improvement of ~0 but much simpler code? Keep.
-
-**The first run**: Your very first run should always be to establish the baseline,
-so you will run the training script as is.
-
-## Output format
-
-Once the script finishes it prints a summary like this:
-
-val_bpb:          0.997900
-training_seconds: 300.1
-total_seconds:    325.9
-peak_vram_mb:     45060.2
-mfu_percent:      39.80
-total_tokens_M:   499.6
-num_steps:        953
-num_params_M:     50.3
-depth:            8
-
-## Logging results
-
-When an experiment is done, log it to `results.tsv` (tab-separated, NOT
-comma-separated — commas break in descriptions).
-
-The TSV has a header row and 5 columns:
-commit, val_bpb, memory_gb, status, description
+**Simplicity criterion**: All else being equal, simpler is better.
+A 0.001 improvement that adds 20 lines of hacky code? Probably not worth it.
+A 0.001 improvement from deleting code? Definitely keep.
 
 ## The experiment loop
 
-The experiment runs on a dedicated branch (e.g. `autoresearch/mar5`).
-
 LOOP FOREVER:
 
-1. Look at the git state: the current branch/commit we're on
-2. Tune `train.py` with an experimental idea by directly hacking the code.
+1. Look at the git state
+2. Tune `train.py` with an experimental idea
 3. git commit
 4. Run the experiment: `uv run train.py > run.log 2>&1`
-5. Read out the results: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
-6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log`
-   to read the Python stack trace and attempt a fix.
-7. Record the results in the tsv
-8. If val_bpb improved (lower), you "advance" the branch, keeping the git commit
-9. If val_bpb is equal or worse, you git reset back to where you started
-
-**Timeout**: Each experiment should take ~5 minutes total. If a run exceeds
-10 minutes, kill it and treat it as a failure.
-
-**Crashes**: If a run crashes, use your judgment: If it's something dumb and
-easy to fix, fix it and re-run. If the idea itself is fundamentally broken,
-just skip it, log "crash" as the status, and move on.
+5. Read out the results: `grep "^val_bpb:" run.log`
+6. If crash, read stack trace and attempt fix
+7. Record results in tsv
+8. If improved, advance branch. If not, git reset.
 
 **NEVER STOP**: Once the experiment loop has begun, do NOT pause to ask the
-human if you should continue. Do NOT ask "should I keep going?" or "is this
-a good stopping point?". The human might be asleep, or gone from a computer
-and expects you to continue working *indefinitely* until you are manually
-stopped. You are autonomous.
+human if you should continue. The human might be asleep. You are autonomous.
 
-As an example use case, a user might leave you running while they sleep. If
-each experiment takes you ~5 minutes then you can run approx 12/hour, for a
-total of about 100 over the duration of the average human sleep. The user
-then wakes up to experimental results, all completed by you while they slept!
+As an example, a user might leave you running while they sleep.
+~12 experiments/hour, ~100 over a night's sleep.
 ```
 
 </Tabs.Tab>
 </Tabs>
 
-## 루프의 구조
-
-```
-program.md (사람이 작성)
-    ↓
-AI가 train.py 수정
-    ↓
-5분간 학습
-    ↓
-val_bpb 측정 (낮을수록 좋음)
-    ↓
-결과 보고 → program.md 개선
-    ↓
-(반복)
-```
-
-밤새 돌리면 약 100번의 실험이 진행됩니다.
-매 실험마다 `val_bpb`가 측정되고, 좋은 결과는 유지됩니다.
-
-핵심은 세 가지입니다:
-
-1. **하나의 파일**만 AI가 수정한다 (`train.py`)
-2. **하나의 지표**로 평가한다 (`val_bpb`)
-3. **고정된 시간 예산** 안에서 반복한다 (5분)
-
-## 업무에 적용하면?
-
-같은 구조를 우리 업무에 대입합니다.
-
-| autoresearch | 오늘 워크숍 |
-|---|---|
-| `train.py` (AI가 수정하는 코드) | 업무 결과물 (AI가 생성하는 코드리뷰, 문서, TC) |
-| `program.md` (사람이 다듬는 지시서) | <strong>내 업무 지침서</strong> (ChatGPT 커스텀 지침 / Gemini Gems) |
-| `val_bpb` (단일 평가 지표) | <strong>체크리스트 점수</strong> (팀 컨벤션 부합도, 누락 항목 수 등) |
-| 5분 고정 시간 예산 | <strong>~15분 1사이클</strong> |
-| 밤새 100번 자동 반복 | <strong>3사이클 직접 반복</strong> |
-
-```
-내 지침서 (사람이 작성)
-    ↓
-AI가 업무 결과물 생성
-    ↓
-평가 기준으로 채점
-    ↓
-개선 포인트 메모 → 지침서 수정
-    ↓
-(반복)
-```
-
-<Callout type="info">
-**핵심 메시지**
-
-autoresearch에서 사람이 프로그래밍하는 대상은 Python이 아니라 `program.md`입니다.
-오늘 워크숍에서 여러분이 프로그래밍하는 대상은 코드가 아니라 <strong>업무 지침서</strong>입니다.
-</Callout>
-
-## 우아한형제들 사례: 왜 구조를 줘야 하는가
-
-이 루프가 왜 작동하는지, 우아한형제들의 실제 사례가 보여줍니다.
-
-### AI와 함께하는 테스트 자동화: 플러그인 개발기
-
-> 출처: [우아한형제들 기술블로그](https://techblog.woowahan.com/24568/) (강규한, 2025.12)
-
-커머스 백엔드 개발자가 AI로 테스트 코드를 만들려 했습니다.
-
-**1차 시도: AI에게 "테스트 코드 작성해줘"**
-- 10개 클래스 테스트 → 컴파일 성공률 <strong>10%</strong> (9/10 실패)
-- import 오타, 존재하지 않는 클래스 참조, 타입 불일치
-
-**2차 시도: 구조를 먼저 제공 + AI는 구현만**
-- IntelliJ 플러그인이 코드를 분석해서 TODO 템플릿을 만들고
-- AI는 그 템플릿 안의 TODO만 구현
-- 컴파일 성공률 <strong>95%</strong>, 작업 시간 10분 → 3분
-
-| 지표 | 이전 | 이후 |
-|------|------|------|
-| 클래스당 작업 시간 | 10분 | 3분 (70% 단축) |
-| 컴파일 성공률 | 85% | 95% |
-| 메서드 커버리지 | 67% | 95% |
-
-<Callout type="warning">
-**이것이 오늘 워크숍에서 지침서를 만드는 이유입니다.**
-
-"코드 리뷰해줘"라고만 하면 (= 빈 지침서) → 일반적이고 뻔한 결과
-"이 구조와 기준으로 리뷰해줘"라고 하면 (= 잘 쓴 지침서) → 전문가 수준의 결과
-
-테스트 자동화 플러그인이 성공한 것과 같은 원리입니다.
-<strong>AI의 한계를 인정하고, 구조를 줘야 합니다.</strong>
-</Callout>
-
 ---
 
-## 직접 해보기: Gemini로 autoresearch 분석하기
+개념을 이해했으면, 실습으로 넘어갑니다.
 
-### Step 1: Gemini에 저장소 연결 (5분)
-
-1. [Gemini 웹](https://gemini.google.com) 접속
-2. 새 대화 시작
-3. GitHub 연결: `karpathy/autoresearch` 저장소 연결
-4. 첫 질문:
-
-```
-이 저장소의 program.md와 train.py, prepare.py를 읽고,
-이 프로젝트가 어떻게 작동하는지 한국어로 설명해줘.
-특히:
-- 사람이 하는 일과 AI가 하는 일을 구분해서
-- 실험 루프가 어떻게 반복되는지
-- "NEVER STOP"이라는 지시가 왜 필요한지
-```
-
-### Step 2: Gemini Canvas로 시각화 앱 만들기 (15분)
-
-> "어려운 걸 쉽게 설명할 수 있을 때, 진짜 이해한 겁니다."
-
-지금 이해한 autoresearch의 작동 방식을 Gemini Canvas로 시각화하는 웹앱을 만들어보세요.
-
-**목표: 초등학생도 이해할 수 있을 만큼 쉽게!**
-
-만들 수 있는 것 예시 (참고만, 자유롭게 만드세요):
-
-- <strong>"AI 연구원의 하루"</strong> — program.md가 바뀌면 AI의 행동이 어떻게 달라지는지 보여주는 인터랙티브 스토리
-- <strong>autoresearch 루프 시뮬레이터</strong> — 버튼을 누르면 AI가 실험하고 점수가 올라가는 과정을 시각적으로 보여주기
-- <strong>"AI에게 지시하기" 놀이</strong> — 지시를 바꿔가며 AI의 결과가 달라지는 것을 체험하는 시뮬레이션
-
-5분 안에 만들기. 완성도보다 핵심 전달이 중요합니다.
-
-### Step 3: 옆 사람과 공유 + 대화 (10분)
-
-2인 1조로:
-1. 서로 만든 시각화 앱을 보여주기 (각 2분)
-2. "이 부분이 핵심을 잘 잡았다" / "이건 좀 다르게 설명하면 더 좋겠다" 피드백
-3. **연결 질문**: "autoresearch에서 program.md가 하는 역할을, 여러분의 업무에 적용하면 뭐가 될까요?"
-
-<Callout type="info">
-이 질문이 Phase 2로 넘어가는 브릿지입니다.
-
-`program.md` = 코드 리뷰 지침서 / 기획서 리뷰 기준 / TC 설계 규칙
-</Callout>
-
----
-
-[Phase 2: 프롬프트 자동 개선 실습 →](/workshop/advanced/cycle)
+[실습: Gemini로 autoresearch 분석 + Canvas 시각화 →](/workshop/advanced/autoresearch-lab)
