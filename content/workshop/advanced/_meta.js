@@ -14,8 +14,12 @@ export default {
   'cycle-lab': '실습: 코드 리뷰 프롬프트 개선',
   '-- phase3': {
     type: 'separator',
-    title: 'Phase 3 — 내 업무 적용 + 회고'
+    title: 'Phase 3 — 내 업무 적용'
   },
   'my-prompt': '실습: 내 업무 프롬프트로 실험',
+  '-- phase4': {
+    type: 'separator',
+    title: 'Phase 4 — 회고'
+  },
   'retro': '회고 + 액션플랜'
 }
