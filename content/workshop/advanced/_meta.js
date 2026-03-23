@@ -8,15 +8,15 @@ export default {
   'autoresearch-lab': '실습: 분석 + 인포그래픽',
   '-- phase2': {
     type: 'separator',
-    title: 'Phase 2 — 자동 개선 실습'
+    title: 'Phase 2 — AI가 코드를 자동 개선'
   },
   'cycle': '개념: prompt-workshop 구조',
-  'cycle-lab': '실습: 코드 리뷰 프롬프트 개선',
+  'cycle-lab': '실습: AI가 코드를 자동 개선하게 만들기',
   '-- phase3': {
     type: 'separator',
     title: 'Phase 3 — 내 업무 적용'
   },
-  'my-prompt': '실습: 내 업무 프롬프트로 실험',
+  'my-prompt': '실습: 내 업무에 적용하기',
   '-- phase4': {
     type: 'separator',
     title: 'Phase 4 — 회고'
