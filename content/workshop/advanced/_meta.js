@@ -1,5 +1,10 @@
 export default {
   index: '개요',
+  '-- phase0': {
+    type: 'separator',
+    title: 'Phase 0 — 오늘의 방향'
+  },
+  'intro': '오늘 왜 이 워크숍인가',
   '-- phase1': {
     type: 'separator',
     title: 'Phase 1 — autoresearch 이해'
