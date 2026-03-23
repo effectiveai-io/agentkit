@@ -51,7 +51,7 @@ import { Callout, Tabs } from 'nextra/components'
 
 ### 왜 이게 중요한가
 
-autoresearch는 단순한 실험 도구가 아니라, **"사람이 일하는 방식의 변화"**를 보여줍니다:
+autoresearch는 단순한 실험 도구가 아니라, <strong>"사람이 일하는 방식의 변화"</strong>를 보여줍니다:
 
 - <strong>이전</strong>: 사람이 코드를 직접 작성하고 실험하고 측정
 - <strong>이후</strong>: 사람은 지시서(`program.md`)만 다듬고, AI가 코드 수정 → 실험 → 측정 → 판단을 자율적으로 반복
@@ -80,7 +80,7 @@ Karpathy는 이 `.md` 파일을 이렇게 표현합니다:
 ## 루프의 구조
 
 ```
-program.md (사람이 작성)
+program.md (사람이 작성, 루프 안에서는 고정)
     ↓
 AI가 train.py 수정
     ↓
@@ -88,10 +88,13 @@ AI가 train.py 수정
     ↓
 val_bpb 측정 (낮을수록 좋음)
     ↓
-결과 보고 → program.md 개선
+올랐으면 keep (유지) / 내려갔으면 discard (되돌림)
     ↓
-(반복)
+(반복 — AI가 자율적으로 다음 실험을 결정)
 ```
+
+사람이 `program.md`를 다듬는 것은 **이 루프가 끝난 후**입니다.
+루프가 정체되면 사람이 `program.md`를 수정해서 새 라운드를 시작합니다.
 
 밤새 돌리면 약 100번의 실험이 진행됩니다.
 매 실험마다 `val_bpb`가 측정되고, 좋은 결과는 유지됩니다.
