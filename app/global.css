@@ -1387,3 +1387,17 @@ article a.home-button.primary {
     min-height: auto;
   }
 }
+
+/* 본문 내 이미지: 텍스트 너비에 맞추고 리스트 안에서는 들여쓰기 유지 */
+article img {
+  max-width: 100%;
+  border-radius: var(--agentkit-radius);
+  border: 1px solid var(--agentkit-border);
+  margin: 0.75rem 0;
+}
+
+article ol img,
+article ul img {
+  max-width: calc(100% - 1rem);
+  margin-left: 0;
+}
